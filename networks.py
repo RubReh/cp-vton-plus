@@ -126,9 +126,9 @@ class FeatureRegression(nn.Module):
         self.linear = nn.Linear(64 * 4 * 3, output_dim)
         self.tanh = nn.Tanh()
         if use_cuda:
-            self.conv.cuda()
-            self.linear.cuda()
-            self.tanh.cuda()
+            self.conv #.cuda()
+            self.linear #.cuda()
+            self.tanh #.cuda()
 
     def forward(self, x):
         x = self.conv(x)
@@ -154,7 +154,7 @@ class AffineGridGen(nn.Module):
 
 
 class TpsGridGen(nn.Module):
-    def __init__(self, out_h=256, out_w=192, use_regular_grid=True, grid_size=3, reg_factor=0, use_cuda=True):
+    def __init__(self, out_h=256, out_w=192, use_regular_grid=True, grid_size=3, reg_factor=0, use_cuda=False):
         super(TpsGridGen, self).__init__()
         self.out_h, self.out_w = out_h, out_w
         self.reg_factor = reg_factor
@@ -433,7 +433,7 @@ class VGGLoss(nn.Module):
     def __init__(self, layids=None):
         super(VGGLoss, self).__init__()
         self.vgg = Vgg19()
-        self.vgg.cuda()
+        self.vgg #.cuda()
         self.criterion = nn.L1Loss()
         self.weights = [1.0/32, 1.0/16, 1.0/8, 1.0/4, 1.0]
         self.layids = layids
@@ -510,9 +510,9 @@ class GMM(nn.Module):
         self.l2norm = FeatureL2Norm()
         self.correlation = FeatureCorrelation()
         self.regression = FeatureRegression(
-            input_nc=192, output_dim=2*opt.grid_size**2, use_cuda=True)
+            input_nc=192, output_dim=2*opt.grid_size**2, use_cuda=False)
         self.gridGen = TpsGridGen(
-            opt.fine_height, opt.fine_width, use_cuda=True, grid_size=opt.grid_size)
+            opt.fine_height, opt.fine_width, use_cuda=False, grid_size=opt.grid_size)
 
     def forward(self, inputA, inputB):
         featureA = self.extractionA(inputA)
@@ -531,11 +531,11 @@ def save_checkpoint(model, save_path):
         os.makedirs(os.path.dirname(save_path))
 
     torch.save(model.cpu().state_dict(), save_path)
-    model.cuda()
+    #model.cuda()
 
 
 def load_checkpoint(model, checkpoint_path):
     if not os.path.exists(checkpoint_path):
         return
     model.load_state_dict(torch.load(checkpoint_path))
-    model.cuda()
+    #model.cuda()

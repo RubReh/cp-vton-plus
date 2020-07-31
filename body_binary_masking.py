@@ -65,7 +65,7 @@ def main():
     #root_dir = "data/viton_resize"
     root_dir = "data/"
     mask_folder = "image-mask"
-    seg_folder = "image-parse-new"
+    seg_folder = "image-parse-new-vis"
 
     #data_mode = "train"
     data_mode = "test"
