@@ -65,7 +65,7 @@ def main():
     #root_dir = "data/viton_resize"
     root_dir = "data/"
     mask_folder = "image-mask"
-    seg_folder = "image-parse-new-vis"
+    seg_folder = "image-parse-new"
 
     #data_mode = "train"
     data_mode = "test"
@@ -80,8 +80,11 @@ def main():
     mask_dir = os.path.join(os.path.join(root_dir, data_mode), mask_folder)
     if not os.path.exists(mask_dir):
         os.makedirs(mask_dir)
-
+    image_list.sort()
+    seg_list.sort()
     for each in zip(image_list, seg_list):
+        print(each[0], each[1])
+
         make_body_mask(image_dir, seg_dir, each[0], each[1], mask_dir)
 
 

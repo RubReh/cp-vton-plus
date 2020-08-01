@@ -241,6 +241,9 @@ def main():
     image_list = os.listdir(image_dir)
     masks_list = os.listdir(seg_dir)
 
+    image_list.sort()
+    masks_list.sort()
+
     for each in zip(image_list, masks_list):
         update_image_segmentation(
             image_dir, seg_dir, each[0], each[1], updated_seg_dir)
